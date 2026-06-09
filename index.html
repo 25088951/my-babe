@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>❤️ My Babeyy</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+overflow:hidden;
+background:linear-gradient(135deg,#ff4d88,#ff9bbd);
+color:white;
+text-align:center;
+}
+
+/* Pages */
+.page{
+display:none;
+height:100vh;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+padding:20px;
+}
+.active{display:flex;}
+
+/* Heart button */
+.big-heart{
+font-size:120px;
+cursor:pointer;
+animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.2);}
+100%{transform:scale(1);}
+}
+
+/* Buttons */
+button{
+padding:12px 25px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+margin:10px;
+font-size:18px;
+}
+
+.yes{background:white;color:#ff4d88;font-weight:bold;}
+.no{background:#222;color:white;position:absolute;}
+
+/* Floating hearts */
+.heart{
+position:absolute;
+color:rgba(255,255,255,0.4);
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+from{transform:translateY(100vh);}
+to{transform:translateY(-100px);}
+}
+
+/* Dress cards */
+.dress-box{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.card{
+background:white;
+color:black;
+border-radius:15px;
+padding:10px;
+width:200px;
+}
+
+.card img{
+width:100%;
+height:260px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.card.selected{
+border:4px solid gold;
+}
+
+/* Final box */
+.final{
+background:rgba(255,255,255,0.2);
+padding:20px;
+border-radius:15px;
+backdrop-filter:blur(10px);
+}
+
+/* Confetti */
+.confetti{
+position:absolute;
+width:10px;
+height:10px;
+background:red;
+top:0;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+to{transform:translateY(100vh) rotate(360deg);}
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="page active" id="p1">
+<h1> My Beautiful Girl ❤️</h1>
+<p>Tap the heart to begin</p>
+<div class="big-heart" onclick="go(2)">❤️</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+<h1>Do you love me? 🥺</h1>
+
+<button class="yes" onclick="go(3)">YES ❤️</button>
+<button class="no" id="noBtn">NO 😜</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+<h1>I made this for you ❤️</h1>
+<p>A small love message just for you 🥰</p>
+
+<div class="final">
+My love,<br><br>
+You make my world beautiful every day.<br>
+I just want to see you smile and happy ❤️
+</div>
+
+<br>
+<button class="yes" onclick="go(4)">Continue 💕</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+<h1>When will I see you? 🥰</h1>
+
+<input type="time" id="time">
+
+<br><br>
+<button class="yes" onclick="saveTime()">Next ❤️</button>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="p5">
+<h1>Choose your dress 👗</h1>
+
+<div class="dress-box">
+
+<div class="card" onclick="selectDress(this,'Black & White Dress 🖤🤍')">
+<img src="images/black-white.jpg">
+<p>Black & White</p>
+</div>
+
+<div class="card" onclick="selectDress(this,'Pink Dress 💗')">
+<img src="images/pink.jpg">
+<p>Pink</p>
+</div>
+
+<div class="card" onclick="selectDress(this,'Pink & White Dress 💕🤍')">
+<img src="images/pink-white.jpg">
+<p>Pink & White</p>
+</div>
+
+</div>
+</div>
+
+<!-- PAGE 6 -->
+<div class="page" id="p6">
+<div class="final">
+<h1>❤️ Can't wait to see you Nana ❤️</h1>
+
+<p id="result"></p>
+
+<br>
+<h2>I love you forever Babeyy 🥰</h2>
+</div>
+</div>
+
+<script>
+
+let selectedTime="";
+let selectedDress="";
+
+/* page switch */
+function go(n){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById("p"+n).classList.add("active");
+}
+
+/* NO button runs away */
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+noBtn.style.left=Math.random()*80+"vw";
+noBtn.style.top=Math.random()*80+"vh";
+});
+
+/* save time */
+function saveTime(){
+let t=document.getElementById("time").value;
+if(!t){alert("Pick a time ❤️");return;}
+selectedTime=t;
+go(5);
+}
+
+/* select dress */
+function selectDress(el,dress){
+document.querySelectorAll(".card").forEach(c=>c.classList.remove("selected"));
+el.classList.add("selected");
+selectedDress=dress;
+
+setTimeout(()=>{
+document.getElementById("result").innerHTML=
+"📅 Time: "+selectedTime+"<br>👗 Dress: "+selectedDress;
+go(6);
+},800);
+}
+
+/* floating hearts */
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(Math.random()*20+10)+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},300);
+
+/* confetti when page opens */
+setInterval(()=>{
+let c=document.createElement("div");
+c.className="confetti";
+c.style.left=Math.random()*100+"vw";
+c.style.background=["#fff","#ff0","#ff4d88","#00f"][Math.floor(Math.random()*4)];
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),3000);
+},200);
+
+</script>
+
+</body>
+</html>
